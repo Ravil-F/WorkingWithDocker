@@ -17,5 +17,6 @@ docker pull nginx = docker pull nginx:latest - запустим докер.
 
 - Проверим наличие докер-образа через docker images:
  ```docker images```
-<img href="img/1.png">
-Запусти докер-образ через docker run -d [image_id|repository].
+<img src="img/1.png">
+
+- Запусти докер-образ через docker run -d [image_id|repository]:
