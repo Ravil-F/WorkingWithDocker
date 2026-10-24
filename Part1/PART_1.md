@@ -7,16 +7,15 @@
 ## Задание
 - Возьмем официальный докер-образ с nginx и выкачать его при помощи docker pull. Скачается версия по умолчанию latest.<br>
 В зависимости от ОС (Linux, MacOS и т.д.) можно запускать по разному.<br>
- - Если Linux запускается командой:
+ 1. Если Linux запускается командой:
   ```docker run```
   ```systemctl status docker``` - проверка, запущен ли докер.
- - Если MacOs (Window):
-  - запускаем приложение Docker;
-  - docker run
-docker pull nginx = docker pull nginx:latest - запустим докер.
+ 2. Если MacOs (Window):
+  - запускаем приложение Docker.
+  
+docker run - создает контейнер из образа и запускает его. Это составная команда — по сути docker create + docker start
+docker pull nginx = docker pull nginx:latest - скачивает образ nginx.
 
 - Проверим наличие докер-образа через docker images:
  ```docker images```
 <img src="img/1.png">
-
-- Запусти докер-образ через docker run -d [image_id|repository]:
