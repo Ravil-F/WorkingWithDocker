@@ -13,24 +13,25 @@
  2. Если MacOs (Window):
   - запускаем приложение Docker.
   
-- docker run - создает каждый раз новый контейнер из образа и запускает его. Это составная команда — по сути docker create + docker start. Если образа нет локально — неявно делает pull. Результат виден в docker ps <br>
+- ```docker run``` - создает каждый раз новый контейнер из образа и запускает его. Это составная команда — по сути docker create + docker start. Если образа нет локально — неявно делает pull. Результат виден в docker ps <br>
 
-- docker pull nginx = docker pull nginx:latest - скачивает образ nginx.
+- ```docker pull nginx``` = docker pull nginx:latest - скачивает образ nginx.
 
-- docker start <id> - запуск существующего контейнера
+- ```docker start <id>``` - запуск существующего контейнера
 
-- Проверим наличие докер-образа через docker images:
+- Проверим наличие докер-образа через docker images: <br>
  ```docker images```
 <img src="img/1.png">
 
-- docker ps -a - выводит все контейнеры и запущенные и остановленные.
-```docker ps -a```
+- ```docker ps -a``` - выводит все контейнеры и запущенные и остановленные.
 <img src="img/2.png">
 
-- docker rm <name, id> - удаление остановленного контейнера.
-```docker rm <name, id>```
+- ```docker rm <name, id>``` - удаление остановленного контейнера.
 <img src="img/3.png">
 
-- docker container prune - удалить все остановленные контейнеры
-```docker container prune```
+- ```docker container prune``` - удалить все остановленные контейнеры
 <img src="img/4.png">
+
+- ```docker stop <name, id> - остановка докер контейнера. В статусе будет ```Exited (0) 16 min ago``` - если контейнер остановился правильно, без ошибки. <br>
+```Exited (255) About an hour ago``` - контейнер остановится с ошибкой, например при перезагрузке виртуальной машины.
+<img src="img/5.png">
