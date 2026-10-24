@@ -5,12 +5,12 @@
 
 
 ## Задание
-1. Возьмем официальный докер-образ с nginx и выкачать его при помощи docker pull. Скачается версия по умолчанию latest.<br>
+### 1. Возьмем официальный докер-образ с nginx и выкачать его при помощи docker pull. Скачается версия по умолчанию latest.<br>
 Также рассмотрим несколько основных команд для работы с докером. <br>
 В зависимости от ОС (Linux, MacOS и т.д.) можно запускать по разному.<br>
-  1.1. Если Linux запускается командой:
+  1.1. Если Linux запускается командой:<br>
   ```docker run```<br>
-  ```systemctl status docker``` - проверка, запущен ли докер.
+  ```systemctl status docker``` - проверка, запущен ли докер.<br>
   1.2. Если MacOs (Window):
   - запускаем приложение Docker.
   
@@ -59,4 +59,49 @@
 
 ```NAMES``` - имя контейнера. Docker придумал его автоматически (случайная пара «прилагательное_фамилия»). Если бы вы запускали с --name my-nginx, здесь было бы my-nginx. Имя удобно для команд: docker stop eager_albattani вместо длинного ID. Имена уникальны — второй контейнер с тем же именем создать нельзя.
 
-2. Посмотрим информацию о контейнере через ```docker inspect [container_id|container_name]```
+
+### 2. Посмотрим информацию о контейнере через ```docker inspect [container_id|container_name]```
+- ```docker inspect``` - выдает информацию о контейнере в формате json, полное состояния объека Docker.
+Объектом может быть:
+
+контейнер — docker inspect <container_id|name>
+
+образ — docker inspect nginx (или docker image inspect nginx)
+
+сеть — docker network inspect bridge
+
+том — docker volume inspect <name>
+
+То есть docker inspect — универсальный «рентген» для любого объекта Docker. Без аргументов он покажет справку.
+Чтобы не выводить всю информацию об объекте можно вытащить только нужное, например:
+- IP
+```docker inspect --format='{{.NetworkSettings.IPAddress}}' de3b2f19f6f8```
+
+- Порты
+```docker inspect --format='{{json .NetworkSettings.Ports}}' de3b2f19f6f8```
+
+- Статус + код выхода
+```docker inspect --format='{{.State.Status}} / exit={{.State.ExitCode}}' de3b2f19f6f8```
+
+- Размер writable-слоя
+```docker inspect -s --format='{{.SizeRw}}' de3b2f19f6f8```
+
+- Сеть целиком
+```docker inspect --format='{{json .NetworkSettings.Networks}}' de3b2f19f6f8```
+
+
+### 3. Запустим докер с портами 80 и 443 в контейнере, замапленными на такие же порты на локальной машине, через команду run. Проверим, что в браузере по адресу localhost:80 доступна стартовая страница nginx.
+- останавливаем наш контейнер ```docker stop <name, id>```
+- Порт 80 на хосте может быть занят другим процессом (не Docker). Проверим:<br>
+```sudo ss -tlnp | grep :80``` - если ничего не вывело, то порт свободый
+<img src="img/6.png">
+
+- запускаем контейнер с пробросом портов ```docker run -d -p 80:80 -p 443:443 nginx```<br>
+Формат -p: -p <хост_порт>:<контейнер_порт> — левое число = порт на вашей машине, правое = порт внутри контейнера. Важно ```docker start <name, id>``` нельзя применять, так он уже создан и настройки зафиксированы.
+<img src="img/8.png">
+
+- откройте браузер на локальном ПК, перейдите на http://localhost или http://localhost:80. Должна открыться стандартная страница: «Welcome to nginx!»<br>
+Не забыть настроить VM. VirtualBox → Настройки → Сеть → адаптер NAT → Дополнительно → Проброс портов:
+Имя	Протокол	Порт хоста	Порт гостя
+HTTP	TCP	80	80
+HTTPS	TCP	443	443
