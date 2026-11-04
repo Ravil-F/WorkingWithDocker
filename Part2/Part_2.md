@@ -30,4 +30,4 @@ nginx.conf - этот файл написан на языке конфигура
 <img src="img/4.png">
 
 Проверим, что по адресу localhost:80/status отдается страничка со статусом сервера nginx:
-<img src="img/6.png">
+<img src="img/5.png">
