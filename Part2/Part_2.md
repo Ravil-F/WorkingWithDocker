@@ -7,7 +7,7 @@
 <img src="img/0.png">
 
 **Флаг -it** (интерактивный терминал) нужен, если вы хотите зайти в shell (bash/sh) и уже там выполнять команды. Но для простого cat он не обязателен.
-<img src="img/1.png> 
+<img src="img/1.png"> 
 
 Создадим на локальной машине файл nginx.conf. А лучше скопируем его с нашего контейнера командой: <br>
 ```docker cp my-nginx:/etc/nginx/nginx.conf ./nginx.conf```
@@ -17,17 +17,17 @@ nginx.conf - этот файл написан на языке конфигура
 - Комментарии начинаются с решётки # и действуют до конца строки.
 
 Настроим в нем по пути /status отдачу страницы статуса сервера nginx:
-<img src="img/2.png>
+<img src="img/2.png">
 
 Скопируем созданный файл nginx.conf внутрь докер-образа через команду docker cp:
-<img src="img/3.png>
+<img src="img/3.png">
 
 Перезапустим nginx внутри докер-образа через команду exec:
 - Прежде чем перезагружать, убедитесь, что в вашем новом nginx.conf нет синтаксических ошибок:
 ```docker exec my_nginx nginx -t```
 Если вывод ```syntax is ok``` и ```test is successful``` — можно перезагружать:
 ```docker exec my_nginx nginx -s reload```
-<img src="img/4.png>
+<img src="img/4.png">
 
 Проверим, что по адресу localhost:80/status отдается страничка со статусом сервера nginx:
-<img src="img/6.png>
+<img src="img/6.png">
