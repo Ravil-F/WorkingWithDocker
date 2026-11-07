@@ -31,3 +31,23 @@ nginx.conf - этот файл написан на языке конфигура
 
 Проверим, что по адресу localhost:80/status отдается страничка со статусом сервера nginx:
 <img src="img/5.png">
+
+Экспортируем контейнер в файл container.tar через команду export:
+```docker export my_nginx > container.tar``` или
+```docker export --output=container.tar my_nginx```
+Остановим контейнер и проверим, что файл .tar создан ```ls -lh container.tar```
+<img src="img/6.png">
+Удалим образ через docker ```docker rmi -f nginx:latest```, не удаляя перед этим контейнеры. Он выдаст ошибку, т.к. наш контейнер ссылается на образ. Если Docker откажется удалять образ из-за ссылки от остановленного контейнера, можно использовать флаг -f (force)
+Удалим остановленный контейнер ```docker rm [name, id]```
+
+Импортируем контейнер обратно через команду import:
+```docker import --change 'CMD ["nginx", "-g", "daemon off;"]' container.tar [name_restored]```<br>
+или через pipe:
+```cat container.tar | docker import --change 'CMD ["nginx", "-g", "daemon off;"]' - nginx-restored:latest```
+Если не указать --change, при запуске контейнера вы получите ошибку no command specified
+
+Запустим импортированный контейнер:
+```docker run -d --name [name] -p 80:80 -p 443:443 [name_restored]```
+<img src="img/7.png">
+
+Проверим, что по адресу localhost:80/status отдается страничка со статусом сервера nginx.
