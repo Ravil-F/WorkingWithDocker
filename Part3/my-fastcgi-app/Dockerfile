@@ -1,17 +1,21 @@
 #берем образ с dockerhub
+#1 этап: Сборка
 FROM gcc:16.2.0 AS builder
+# Устанавливаем утилиту spawn-fcgi и библиотеку для работы C-программы
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libfcgi-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY main.c .
 # Компилируем программу, подключая библиотеку libfcgi
 RUN gcc -o main main.c -lfcgi
 
-
+#2 этап: Финальный образ
 FROM nginx:latest
-# Устанавливаем утилиту spawn-fcgi и библиотеку для работы C-программы
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends spawn-fcgi libfcgi0ldbl
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends spawn-fcgi libfcgi0ldbl && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 # Копируем скомпилированный бинарник из первого этапа
@@ -21,5 +25,5 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Говорим Docker, что контейнер слушает порт 81
 EXPOSE 81
-# Указываем, что при запуске контейнера нужно выполнить
-CMD RUN spawn-fcgi -p 8080 ./main && nginx -g 'daemon off'
+# 5. Запускаем оба процесса (используем JSON-формат, чтобы убрать warning)
+CMD ["sh", "-c", "spawn-fcgi -p 8080 ./main && nginx -g 'daemon off;'"]
