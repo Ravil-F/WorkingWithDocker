@@ -15,14 +15,14 @@
 5. Положи файл nginx.conf по пути ./nginx/nginx.conf (это понадобится позже).
 
 Сделаем наш сервер в контейнере и соберем все это с помощью Dockerfile.
-Создадим директорию и 4 файла в нашей виртуальной машине:
-```mkdir my-fastcgi-app```
-```cd my-fastcgi-app/```
+Создадим директорию и 4 файла в нашей виртуальной машине:<br>
+```mkdir my-fastcgi-app```<br>
+```cd my-fastcgi-app/```<br>
 Все файлы и папки будут лежать в данной директории.
-После мы выполним команду: 
-```docker build -t my-fastcgi-app .```
-и запустим контейнер:
-```docker run -d --name my-fastcgi-container -p 81:81 my-fastcgi-app```
+После мы выполним команду: <br>
+```docker build -t my-fastcgi-app .```<br>
+и запустим контейнер:<br>
+```docker run -d --name my-fastcgi-container -p 81:81 my-fastcgi-app```<br>
 <img src="img/0.png">
 Чтобы открыть страницу в браузере на вашей локальной машине, не забудьте добавить в настройках VirtualBox правило проброса портов: Порт хоста 81 → Порт гостя 81. После этого в браузере локальной машине перейдите по адресу http://localhost:81
 <img src="img/1.png">
