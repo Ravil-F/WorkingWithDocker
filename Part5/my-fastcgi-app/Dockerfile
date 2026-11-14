@@ -14,7 +14,7 @@ RUN gcc -o main main.c -lfcgi
 #2 этап: Финальный образ
 FROM nginx:latest
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends spawn-fcgi libfcgi0ldbl && \
+    apt-get install -y --no-install-recommends spawn-fcgi libfcgi0ldbl curl && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
