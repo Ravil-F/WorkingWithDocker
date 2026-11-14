@@ -1,0 +1,20 @@
+services:
+  # Первый контейнер - наше FastCGI приложение
+  app:
+    build: .
+    container_name: my-fastcgi-app
+    #Обратите внимание: мы НЕ пишем здесь ports, 
+    # чтобы он был доступен только внутри сети Docker.
+  
+  #Второй контейнер - Nginx-прокси
+  proxy:
+    image: nginx:latest
+    container_name: my-proxy-nginx
+    ports:
+      # Мапим 80 порт локальной машины на 8080 порт внутри контейнера
+      - "80:8080"
+    volumes:
+      # Монтируем наш новый конфиг
+      - ./proxy-nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app # Запускать прокси только после старта app
